@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@atproto/api": "^0.13.16",
     "@fal-ai/client": "^1.0.4",
     "@fal-ai/server-proxy": "^1.1.0",
     "next": "15.0.3",
