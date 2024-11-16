@@ -14,7 +14,17 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [prompt, setPrompt] = useState<string>("Everything Sucks!!!");
 
-  const hiddenPrompt = "Please rewrite the following to have a more positive attitude. Your response should be nothing but the same exact prompt just rewritten to be positive. Do not offer multiple options, just write from the perspective of the writer of the original prompt, except with a positive spin, and without leaving out any crucial details. Here is the prompt:";
+  const hiddenPrompt = `Please rewrite the following to have a more positive
+    attitude. Your response should be the same exact prompt, just rewritten to be positive. 
+    Do not offer multiple options, just write from the 
+    perspective of the writer of the original prompt, except with a positive spin, 
+    and without leaving out any crucial details. Please include exclamation points, positive emoji 
+    and an excited demeanor. 
+    DO NOT remove any crucial details.
+    DO NOT invent any additional information that did not exist in the prompt.
+    DO NOT change the core message of the prompt.
+    TRIVIALIZE the negative information however possible. 
+    Please keep the message to a similar length as the original. Here is the prompt:`;
 
   const generateThing = async () => {
     try {
