@@ -10,7 +10,7 @@ export default function Home() {
     <>
       <PostField />
       {[...posts].reverse().map((post) => (
-        <div key={post.id}>
+        <div key={post.id} className="m-10">
           <p>{post.content}</p>
         </div>
       ))}

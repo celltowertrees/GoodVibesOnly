@@ -45,7 +45,6 @@ export default function PostField() {
           }
         }
       });
-      setThing({ id: result.data.id, content: result.data.output });
       await fetch("/api/", {
         method: "POST",
         headers: {
@@ -56,6 +55,7 @@ export default function PostField() {
           content: result.data.output,
         }),
       });
+      setThing({ id: result.data.id, content: result.data.output });
     } catch (error) {
       console.error(error);
     } finally {
