@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       <PostField />
-      {posts.map((post) => (
+      {[...posts].reverse().map((post) => (
         <div key={post.id}>
           <p>{post.content}</p>
         </div>

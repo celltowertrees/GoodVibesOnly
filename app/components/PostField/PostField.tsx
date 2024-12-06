@@ -46,15 +46,16 @@ export default function PostField() {
         }
       });
       setThing({ id: result.data.id, content: result.data.output });
-      // setPosts([...posts, { id: result.data.id, title: prompt, content: result.data.output }]);
-      // await prisma.post.create({
-      //   data: {
-      //     id: result.data.id,
-      //     title: prompt,
-      //     content: result.data.output,
-      //     authorId: 1,
-      //   },
-      // });
+      await fetch("/api/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: result.data.id,
+          content: result.data.output,
+        }),
+      });
     } catch (error) {
       console.error(error);
     } finally {
