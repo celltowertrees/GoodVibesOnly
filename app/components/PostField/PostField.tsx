@@ -8,11 +8,16 @@ fal.config({
   proxyUrl: "/api/fal/proxy",
 });
 
+type Post = {
+  id: number;
+  content: string | null;
+}
+
 export default function PostField() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [thing, setThing] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [prompt, setPrompt] = useState<string>("Everything Sucks!!!");
+  const [thing, setThing] = useState<Post | null>(null);
 
   const hiddenPrompt = `Please rewrite the following to have a more positive
     attitude. Your response should be the same exact prompt, just rewritten to be positive. 
@@ -40,7 +45,16 @@ export default function PostField() {
           }
         }
       });
-      setThing(result);
+      setThing({ id: result.data.id, content: result.data.output });
+      // setPosts([...posts, { id: result.data.id, title: prompt, content: result.data.output }]);
+      // await prisma.post.create({
+      //   data: {
+      //     id: result.data.id,
+      //     title: prompt,
+      //     content: result.data.output,
+      //     authorId: 1,
+      //   },
+      // });
     } catch (error) {
       console.error(error);
     } finally {
@@ -60,7 +74,11 @@ export default function PostField() {
       </div>
       <hr className="my-10" />
       {loading && <p>Loading...</p>}
-      {thing && thing.data.output}
+      {thing && (
+        <div>
+          <p>{thing.content}</p>
+        </div>
+      )}
     </div>
   );
 }
