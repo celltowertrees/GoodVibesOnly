@@ -1,11 +1,25 @@
+"use client";
+
 import { PostField } from "./components/PostField";
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-
-const posts = await prisma.post.findMany();
+import { useEffect, useState } from "react";
+import { Post } from "./types";
 
 export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const getPosts = async () => {
+    const response = await fetch('/api/', {
+      method: "GET",
+    });
+    const posts = await response.json();
+    console.log(posts);
+    return posts;
+  }
+
+  useEffect(() => {
+    getPosts().then((posts) => setPosts(posts.posts));
+  }, []);
+
   return (
     <>
       <PostField />
