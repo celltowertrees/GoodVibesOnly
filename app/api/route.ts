@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
       data: {
         id,
         content: output,
+        original: content,
         authorId: 1,
       },
     });
@@ -47,5 +48,11 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   const posts = await prisma.post.findMany();
-  return NextResponse.json({ posts });
+  const postsWithoutOriginal = posts.map((post) => {
+    return {
+      id: post.id,
+      content: post.content,
+    };
+  });
+  return NextResponse.json({ posts: postsWithoutOriginal });
 }

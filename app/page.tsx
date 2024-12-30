@@ -7,7 +7,6 @@ export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [prompt, setPrompt] = useState<string>("");
-  const [thing, setThing] = useState<Post | null>(null);
 
   const savePost = async (id: number, output: string) => {
     await fetch("/api/", {
@@ -24,14 +23,13 @@ export default function Home() {
   const generateThing = async () => {
     setLoading(true);
 
-    setThing({ id: 1, content: prompt });
+    setPosts([...posts, { content: prompt, id: posts.length + 1 }]);
 
-    await savePost(1, prompt);
+    await savePost(posts.length + 1, prompt);
 
     setLoading(false);
 
-    // set it to the real result once loading has finished
-    setThing({ id: 1, content: prompt });
+    // poll for new posts
   };
 
   const getPosts = async () => {
@@ -54,21 +52,15 @@ export default function Home() {
         <hr className="my-10" />
         <div className="w-full">
           <form className="w-full flex" onSubmit={(e) => { e.preventDefault(); generateThing() } }>
-            <input type="text" className="flex-1" placeholder="Everything Sucks!!!" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+            <input type="text" className="flex-1" placeholder="Post Ur Vibe :)" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
             <button type="submit">Post</button>
           </form>
         </div>
         <hr className="my-10" />
-        {loading && <p>Loading...</p>}
-        {thing && (
-          <div>
-            <p>{thing.content}</p>
-          </div>
-        )}
       </div>
 
       {[...posts].reverse().map((post) => (
-        <div key={post.id} className="m-10">
+        <div key={post.id} className={`m-10${loading && post.id === posts.length ? " animate-pulse" : ""}`}>
           <p>{post.content}</p>
         </div>
       ))}
