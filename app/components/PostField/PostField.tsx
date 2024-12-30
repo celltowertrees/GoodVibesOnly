@@ -24,10 +24,13 @@ export default function PostField() {
   const generateThing = async () => {
     setLoading(true);
 
+    setThing({ id: 1, content: prompt });
+
     await savePost(1, prompt);
 
     setLoading(false);
 
+    // set it to the real result once loading has finished
     setThing({ id: 1, content: prompt });
   };
 
