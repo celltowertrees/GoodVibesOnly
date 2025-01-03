@@ -3,6 +3,18 @@
 import { useEffect, useState } from "react";
 import { Post } from "./types";
 
+
+function getAuthorId() {
+  const authorId = localStorage.getItem("authorId");
+  if (authorId) {
+    return authorId;
+  } else {
+    const newAuthorId = crypto.randomUUID();
+    localStorage.setItem("authorId", newAuthorId);
+    return newAuthorId;
+  }
+}
+
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -16,6 +28,8 @@ export default function Home() {
       },
       body: JSON.stringify({
         content: output,
+        authorId: getAuthorId(),
+        id,
       }),
     });
   };
@@ -24,12 +38,14 @@ export default function Home() {
     setLoading(true);
 
     setPosts([...posts, { content: prompt, id: posts.length + 1 }]);
+    setPrompt("");
 
-    await savePost(posts.length + 1, prompt);
+    const newPost = await savePost(posts.length + 1, prompt);
+    console.log(newPost);
 
     setLoading(false);
 
-    // poll for new posts
+    getPosts().then((posts) => setPosts(posts.posts));
   };
 
   const getPosts = async () => {
@@ -46,8 +62,8 @@ export default function Home() {
   }, []);
 
   return (
-    <>
-        <div className="m-10">
+    <div className="max-w-prose m-auto">
+      <div className="m-10">
         <h1>✨ Good Vibes Only ✨</h1>
         <hr className="my-10" />
         <div className="w-full">
@@ -64,6 +80,6 @@ export default function Home() {
           <p>{post.content}</p>
         </div>
       ))}
-    </>
+    </div>
   );
 }

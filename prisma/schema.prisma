@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
+  id    String    @id @default(uuid())
   posts Post[]
 }
 
@@ -20,5 +20,5 @@ model Post {
   content   String?
   original  String?
   author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+  authorId  String
 }

@@ -12,7 +12,21 @@ fal.config({
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { id, content } = body;
+  const { id, content, authorId } = body;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: authorId,
+    },
+  });
+
+  if (!user) {
+    await prisma.user.create({
+      data: {
+        id: authorId,
+      },
+    });
+  }
 
   try {
     const result = await fal.subscribe("fal-ai/any-llm", {
@@ -34,7 +48,7 @@ export async function POST(request: NextRequest) {
         id,
         content: output,
         original: content,
-        authorId: 1,
+        authorId,
       },
     });
   
