@@ -21,7 +21,7 @@ export default function Home() {
   const [prompt, setPrompt] = useState<string>("");
 
   const savePost = async (id: number, output: string) => {
-    await fetch("/api/", {
+    const newPost = await fetch("/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,6 +32,8 @@ export default function Home() {
         id,
       }),
     });
+
+    return newPost.json();
   };
 
   const generateThing = async () => {
@@ -41,6 +43,7 @@ export default function Home() {
     setPrompt("");
 
     const newPost = await savePost(posts.length + 1, prompt);
+
     console.log(newPost);
 
     setLoading(false);
@@ -49,11 +52,11 @@ export default function Home() {
   };
 
   const getPosts = async () => {
-    const response = await fetch('/api/', {
+    const response = await fetch('/api', {
       method: "GET",
     });
     const posts = await response.json();
-    console.log(posts);
+
     return posts;
   }
 

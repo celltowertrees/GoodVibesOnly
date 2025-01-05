@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       },
     });
   
-    return NextResponse.json({ post });
+    return NextResponse.json({ post: { id: post.id, content: post.content } });
   
   } catch (error) {
     console.error(error);
